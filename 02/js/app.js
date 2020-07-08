@@ -33,13 +33,11 @@ let Tasks = {
   },
   methods: {
     toggleDone(id) {
-      let task = this.tasks.find((task) => {
-        return task.id === id;
+      this.tasks.map((task) => {
+        if (task.id === id) {
+          task.done = !task.done;
+        }
       });
-
-      if (task) {
-        task.done = !task.done;
-      }
     },
   },
   mounted() {
