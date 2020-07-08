@@ -8,12 +8,15 @@ let Task = {
         <a href="" @click.prevent="toggleDone(task.id)">
             Make it {{ task.done ? 'not done' : 'done' }}
         </a> |
-        <a href="">Delete</a>
+        <a href="" @click.prevent="deleteTask(task.id)">Delete</a>
     </div>
   `,
   methods: {
     toggleDone(id) {
       bus.$emit("task:toggleDone", id);
+    },
+    deleteTask(id) {
+      bus.$emit("task:delete", id);
     },
   },
 };
@@ -39,20 +42,33 @@ let Tasks = {
         }
       });
     },
+    delete(id) {
+      this.tasks = this.tasks.filter((task) => {
+        return task.id !== id;
+      });
+    },
   },
   mounted() {
     bus.$on("task:toggleDone", (id) => {
       this.toggleDone(id);
     });
+    bus.$on("task:delete", (id) => {
+      this.delete(id);
+    });
   },
   template: `
         <div>
             <div class="tasks">
-                <ul>
-                    <li v-for="task in tasks">
-                        <task :key="task.id" :task="task"></task>
-                    </li>
-                </ul>
+                <template v-if="tasks.length > 0">
+                    <ul>
+                        <li v-for="task in tasks">
+                            <task :key="task.id" :task="task"></task>
+                        </li>
+                    </ul>
+                </template>
+                <template v-else>
+                    <p>No task yet.</p>
+                </template>
             </div>
         </div>
     `,
