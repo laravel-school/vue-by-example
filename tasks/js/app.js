@@ -24,9 +24,6 @@ let Item = {
                     <textarea v-model="form.item"></textarea>
                 </div>
                 <div>
-                    <input type="checkbox" v-model="form.done"> Is completed?
-                </div>
-                <div>
                     <button>Add Now</button>
                 </div>
             </form>
@@ -62,11 +59,7 @@ let Tasks = {
   },
   data() {
     return {
-      tasks: [
-        { id: 1, title: "Go to University", done: true },
-        { id: 2, title: "Teach UG Student", done: false },
-        { id: 3, title: "Disucss with Prof.", done: false },
-      ],
+      tasks: [],
     };
   },
   methods: {
@@ -86,7 +79,7 @@ let Tasks = {
       let newItem = {
         id: this.getId(),
         title: form.item,
-        done: form.done,
+        done: false,
       };
 
       this.tasks.unshift(newItem);
