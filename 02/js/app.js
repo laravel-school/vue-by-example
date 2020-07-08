@@ -1,3 +1,5 @@
+let bus = new Vue();
+
 let Task = {
   props: ["task"],
   template: `
@@ -11,7 +13,7 @@ let Task = {
   `,
   methods: {
     toggleDone(id) {
-      this.task.done = !this.task.done;
+      bus.$emit("task:toggleDone", id);
     },
   },
 };
@@ -28,6 +30,22 @@ let Tasks = {
         { id: 3, title: "Disucss with Prof.", done: false },
       ],
     };
+  },
+  methods: {
+    toggleDone(id) {
+      let task = this.tasks.find((task) => {
+        return task.id === id;
+      });
+
+      if (task) {
+        task.done = !task.done;
+      }
+    },
+  },
+  mounted() {
+    bus.$on("task:toggleDone", (id) => {
+      this.toggleDone(id);
+    });
   },
   template: `
         <div>
