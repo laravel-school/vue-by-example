@@ -11,7 +11,7 @@ let Item = {
   },
   methods: {
     add() {
-      bus.$emit("task:add", this.form);
+      this.$emit("task:add", this.form);
       this.form.item = "";
     },
   },
@@ -102,9 +102,6 @@ let Tasks = {
     bus.$on("task:delete", (id) => {
       this.delete(id);
     });
-    bus.$on("task:add", (form) => {
-      this.add(form);
-    });
   },
   template: `
         <div>
@@ -120,7 +117,7 @@ let Tasks = {
                     <p>No task yet.</p>
                 </template>
 
-                <item></item>
+                <item v-on:task:add="add"></item>
             </div>
         </div>
     `,
