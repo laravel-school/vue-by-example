@@ -1,5 +1,39 @@
 let bus = new Vue();
 
+let Item = {
+  data() {
+    return {
+      form: {
+        item: "",
+        done: false,
+      },
+    };
+  },
+  methods: {
+    add() {
+      bus.$emit("task:add", this.form);
+      this.form.item = "";
+    },
+  },
+  template: `
+        <div>
+            <hr/>
+            <h4>Add a new item</h4>
+            <form @submit.prevent="add">
+                <div>
+                    <textarea v-model="form.item"></textarea>
+                </div>
+                <div>
+                    <input type="checkbox" v-model="form.done"> Is completed?
+                </div>
+                <div>
+                    <button>Add Now</button>
+                </div>
+            </form>
+        </div>
+    `,
+};
+
 let Task = {
   props: ["task"],
   template: `
@@ -24,6 +58,7 @@ let Task = {
 let Tasks = {
   components: {
     task: Task,
+    item: Item,
   },
   data() {
     return {
@@ -47,6 +82,18 @@ let Tasks = {
         return task.id !== id;
       });
     },
+    add(form) {
+      let newItem = {
+        id: this.getId(),
+        title: form.item,
+        done: form.done,
+      };
+
+      this.tasks.push(newItem);
+    },
+    getId() {
+      return this.tasks.length + 1;
+    },
   },
   mounted() {
     bus.$on("task:toggleDone", (id) => {
@@ -54,6 +101,9 @@ let Tasks = {
     });
     bus.$on("task:delete", (id) => {
       this.delete(id);
+    });
+    bus.$on("task:add", (form) => {
+      this.add(form);
     });
   },
   template: `
@@ -69,6 +119,8 @@ let Tasks = {
                 <template v-else>
                     <p>No task yet.</p>
                 </template>
+
+                <item></item>
             </div>
         </div>
     `,
