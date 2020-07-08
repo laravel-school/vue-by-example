@@ -89,7 +89,7 @@ let Tasks = {
         done: form.done,
       };
 
-      this.tasks.push(newItem);
+      this.tasks.unshift(newItem);
     },
     getId() {
       return this.tasks.length + 1;
