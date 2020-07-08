@@ -2,20 +2,16 @@ let Task = {
   props: ["task"],
   template: `
     <div>
-        <span :class="{ done: task.done === true }">{{ task.title }}</span>
-        <a href="" @click.prevent="toggleDone(task.id)">Make is done</a> |
+        <span :class="{ done: task.done }">{{ task.title }}</span>
+        <a href="" @click.prevent="toggleDone(task.id)">
+            Make it {{ task.done ? 'not done' : 'done' }}
+        </a> |
         <a href="">Delete</a>
     </div>
   `,
   methods: {
     toggleDone(id) {
-      let task = this.tasks.find((task) => {
-        return task.id === id;
-      });
-
-      if (task) {
-        task.done = true;
-      }
+      this.task.done = !this.task.done;
     },
   },
 };
@@ -27,7 +23,7 @@ let Tasks = {
   data() {
     return {
       tasks: [
-        { id: 1, title: "Go to University", done: false },
+        { id: 1, title: "Go to University", done: true },
         { id: 2, title: "Teach UG Student", done: false },
         { id: 3, title: "Disucss with Prof.", done: false },
       ],
