@@ -27,7 +27,7 @@ let Question = {
     };
   },
   methods: {
-    chosen(answer) {
+    answerClicked(answer) {
       this.showNextButton = true;
       this.answerChosen = answer;
     },
@@ -42,7 +42,7 @@ let Question = {
             <answer 
                 v-for="answer in question.answers" 
                 :answer="answer"
-                v-on:answer:chosen="chosen"
+                v-on:answer:chosen="answerClicked"
             ></answer>
 
             <button v-if="showNextButton" @click.prevent="nextQuestion">Next</button>
