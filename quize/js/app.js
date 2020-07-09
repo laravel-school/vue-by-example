@@ -23,13 +23,16 @@ let Question = {
   data() {
     return {
       showNextButton: false,
+      answerChosen: null,
     };
   },
   methods: {
     chosen(answer) {
       this.showNextButton = true;
-
-      this.$emit("answerGiven", answer, this.question);
+      this.answerChosen = answer;
+    },
+    nextQuestion() {
+      this.$emit("answerGiven", this.answerChosen, this.question);
     },
   },
   template: `
@@ -42,7 +45,7 @@ let Question = {
                 v-on:answer:chosen="chosen"
             ></answer>
 
-            <button v-if="showNextButton">Next</button>
+            <button v-if="showNextButton" @click.prevent="nextQuestion">Next</button>
         </div>
     `,
 };
